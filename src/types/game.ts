@@ -1,0 +1,43 @@
+
+export interface GameState {
+  currentStage: number;
+  totalStages: number;
+  score: number;
+  timeRemaining: number;
+  isGameActive: boolean;
+  gameStatus: 'intro' | 'playing' | 'completed' | 'failed';
+  errors: number;
+  accuracy: number;
+  stageData: StageData[];
+}
+
+export interface StageData {
+  id: number;
+  name: string;
+  description: string;
+  timeLimit: number;
+  pointsPerCorrect: number;
+  penaltyPerError: number;
+  completed: boolean;
+  fields: FormField[];
+  userInputs: Record<string, string>;
+  expectedInputs: Record<string, string>;
+}
+
+export interface FormField {
+  id: string;
+  label: string;
+  type: 'text' | 'email' | 'number' | 'select' | 'date' | 'checkbox' | 'textarea';
+  placeholder?: string;
+  required: boolean;
+  options?: string[];
+  validation?: string;
+}
+
+export interface ScoreData {
+  stage: number;
+  score: number;
+  accuracy: number;
+  timeRemaining: number;
+  errors: number;
+}
