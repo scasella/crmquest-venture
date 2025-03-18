@@ -7,15 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { validateField } from "@/lib/gameUtils";
 import { StageData, FormField } from "@/types/game";
-import { Check, X, Clock, FileText } from "lucide-react";
+import { Check, X, FileText } from "lucide-react";
 
 interface StageOneProps {
   stageData: StageData;
   onComplete: (userInputs: Record<string, string>) => void;
-  timeRemaining: number;
 }
 
-const StageOne: React.FC<StageOneProps> = ({ stageData, onComplete, timeRemaining }) => {
+const StageOne: React.FC<StageOneProps> = ({ stageData, onComplete }) => {
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [fieldStatus, setFieldStatus] = useState<Record<string, 'valid' | 'invalid' | 'pristine'>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -123,7 +122,7 @@ const StageOne: React.FC<StageOneProps> = ({ stageData, onComplete, timeRemainin
             <CardHeader className="bg-gray-100 pb-2">
               <CardTitle className="text-lg flex items-center text-gray-700">
                 <FileText className="mr-2 h-5 w-5 text-gray-500" />
-                Reference Data
+                Customer Information
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
@@ -133,28 +132,8 @@ const StageOne: React.FC<StageOneProps> = ({ stageData, onComplete, timeRemainin
                 transition={{ delay: 0.4, duration: 0.5 }}
                 className="space-y-4"
               >
-                {Object.entries(stageData.expectedInputs).map(([key, value]) => {
-                  const field = stageData.fields.find(f => f.id === key);
-                  return field ? (
-                    <div key={key} className="pb-2 border-b border-gray-200 last:border-0">
-                      <div className="text-xs font-medium text-gray-500">{field.label}:</div>
-                      <div className="font-medium text-gray-800">{value}</div>
-                    </div>
-                  ) : null;
-                })}
-                
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-500 flex items-center">
-                      <Clock className="mr-1 h-4 w-4 text-amber-500" />
-                      Time Remaining:
-                    </div>
-                    <div className={`font-mono font-medium ${
-                      timeRemaining < 10 ? "text-red-500 animate-pulse" : "text-gray-700"
-                    }`}>
-                      {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
-                    </div>
-                  </div>
+                <div className="p-3 bg-white border border-gray-200 rounded-md">
+                  <pre className="whitespace-pre-wrap text-sm font-mono text-gray-700">{stageData.unstructuredData}</pre>
                 </div>
               </motion.div>
             </CardContent>
@@ -287,7 +266,7 @@ const StageOne: React.FC<StageOneProps> = ({ stageData, onComplete, timeRemainin
                       className="p-3 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-700"
                     >
                       <p className="font-medium mb-1">Hint:</p>
-                      <p>Make sure to copy the exact information from the reference panel. Pay attention to capitalization and formatting.</p>
+                      <p>Read the customer information carefully and extract the correct details to fill in the form fields. Pay attention to the exact formatting of emails, phone numbers, and names.</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

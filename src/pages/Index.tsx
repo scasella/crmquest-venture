@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GameIntro from "@/components/GameIntro";
@@ -15,7 +14,6 @@ const Index = () => {
     currentStage: 1,
     totalStages: 3,
     score: 0,
-    timeRemaining: 0,
     isGameActive: false,
     gameStatus: "intro",
     errors: 0,
@@ -24,7 +22,6 @@ const Index = () => {
   });
   
   const [stageScores, setStageScores] = useState<ScoreData[]>([]);
-  const [totalTime, setTotalTime] = useState(0);
 
   useEffect(() => {
     // Generate stages data
@@ -46,25 +43,19 @@ const Index = () => {
       score: 0,
       errors: 0,
       accuracy: 0,
-      timeRemaining: prev.stageData[0]?.timeLimit || 60,
     }));
     
     setStageScores([]);
-    setTotalTime(0);
     
     toast({
       title: "Game Started!",
-      description: "Complete each CRM task with speed and accuracy",
+      description: "Accurately place customer data into the correct CRM fields",
     });
   };
 
   const handleStageComplete = (scoreData: ScoreData) => {
     // Update scores
     setStageScores((prev) => [...prev, scoreData]);
-    
-    // Calculate total time used
-    const timeUsed = gameState.stageData[gameState.currentStage - 1].timeLimit - scoreData.timeRemaining;
-    setTotalTime((prev) => prev + timeUsed);
     
     // Update game state
     const newStage = gameState.currentStage + 1;
@@ -120,7 +111,6 @@ const Index = () => {
       ...prev,
       currentStage: 1,
       score: 0,
-      timeRemaining: 0,
       isGameActive: false,
       gameStatus: "intro",
       errors: 0,
@@ -129,7 +119,6 @@ const Index = () => {
     }));
     
     setStageScores([]);
-    setTotalTime(0);
   };
 
   const renderScreen = () => {
@@ -172,7 +161,6 @@ const Index = () => {
             scores={stageScores}
             totalScore={gameState.score}
             totalAccuracy={gameState.accuracy}
-            totalTime={totalTime}
             onRestart={handleRestart}
           />
         );

@@ -8,7 +8,6 @@ export const generateStages = (): StageData[] => {
       id: 1,
       name: "Basic Contact Information",
       description: "Enter customer contact details in the CRM system",
-      timeLimit: 60,
       pointsPerCorrect: 10,
       penaltyPerError: 5,
       completed: false,
@@ -58,12 +57,17 @@ export const generateStages = (): StageData[] => {
         phone: "(415) 555-3827",
         company: "Acme Corporation",
       },
+      unstructuredData: `From: Sales Team
+Subject: New Lead Information
+
+Just met with Michael Johnson from Acme Corporation during the trade show. 
+He can be reached at (415) 555-3827 or via email at mjohnson@company.com.
+He expressed interest in our enterprise solution.`,
     },
     {
       id: 2,
       name: "Sales Opportunity Details",
       description: "Record details about a new sales opportunity",
-      timeLimit: 90,
       pointsPerCorrect: 15,
       penaltyPerError: 7,
       completed: false,
@@ -127,12 +131,21 @@ export const generateStages = (): StageData[] => {
         description: "Complete software upgrade for accounting department",
         source: "Trade Show",
       },
+      unstructuredData: `Call Notes - December 5, 2023
+Account Manager: Sarah Thompson
+
+Spoke with Acme Corp's IT Director about their accounting department software upgrade needs.
+They're looking to spend around $75k for a complete Enterprise Software Upgrade.
+We've sent the proposal last week, and they're currently reviewing it.
+I'd estimate we have about a 60% chance of closing this deal.
+They're hoping to implement by the end of the year (12/31/2023).
+Remember this lead came from the Tech Expo Trade Show last month.
+Additional notes: They specifically need the upgrade to handle their multi-currency transactions and improve reporting capabilities for the accounting department.`,
     },
     {
       id: 3,
       name: "Customer Service Case Management",
       description: "Process a customer support ticket with advanced details",
-      timeLimit: 120,
       pointsPerCorrect: 20,
       penaltyPerError: 10,
       completed: false,
@@ -220,6 +233,19 @@ export const generateStages = (): StageData[] => {
         contactMethod: "Email",
         assignedTo: "Tier 2 Support",
       },
+      unstructuredData: `Support Ticket
+Received: 10:45 AM, May 15, 2024
+Support Agent: Alex Rivera
+
+Logged case CS-78294 for Enterprise customer (ID: CUST-55872).
+The customer called reporting a High priority Technical Issue with Data Sync functionality.
+The problem started after our latest update (v3.2.1). 
+Customer reports they cannot sync data between their mobile app and desktop application.
+They sent screenshots by Email showing the error messages.
+I was able to reproduce the issue in our test environment.
+This seems to require Tier 2 Support investigation as it involves both the API and client applications.
+
+Customer comments: "Every time I try to sync between my phone and laptop, I get an error message saying 'Sync Failed: Unexpected data format'. This started right after I installed the update yesterday."`,
     },
   ];
 };
@@ -257,13 +283,6 @@ export const validateField = (field: FormField, value: string): boolean => {
     default:
       return true;
   }
-};
-
-// Format time from seconds to MM:SS
-export const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
 // Calculate total score

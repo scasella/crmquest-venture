@@ -11,15 +11,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { FormField, StageData } from "@/types/game";
 import { validateField } from "@/lib/gameUtils";
-import { User, DollarSign, Calendar, LineChart, AlignLeft, Activity, Clock } from "lucide-react";
+import { DollarSign, Calendar, LineChart, AlignLeft, Activity } from "lucide-react";
 
 interface StageTwoProps {
   stageData: StageData;
   onComplete: (userInputs: Record<string, string>) => void;
-  timeRemaining: number;
 }
 
-const StageTwo: React.FC<StageTwoProps> = ({ stageData, onComplete, timeRemaining }) => {
+const StageTwo: React.FC<StageTwoProps> = ({ stageData, onComplete }) => {
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [activeTab, setActiveTab] = useState("details");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -31,7 +30,7 @@ const StageTwo: React.FC<StageTwoProps> = ({ stageData, onComplete, timeRemainin
     {
       id: "basic",
       title: "Basic Information",
-      icon: <User className="h-4 w-4" />,
+      icon: <DollarSign className="h-4 w-4" />,
       fields: stageData.fields.filter(f => ["opportunityName", "amount"].includes(f.id)),
     },
     {
@@ -214,71 +213,16 @@ const StageTwo: React.FC<StageTwoProps> = ({ stageData, onComplete, timeRemainin
             <CardHeader className="bg-gray-100 pb-3">
               <CardTitle className="text-lg flex items-center text-gray-700">
                 <DollarSign className="mr-2 h-5 w-5 text-gray-500" />
-                Sales Information
+                Call Notes
               </CardTitle>
               <CardDescription className="text-xs text-gray-500">
-                Reference Data
+                Customer Information
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="p-0">
-              <Tabs defaultValue="opportunity" className="w-full">
-                <TabsList className="w-full grid grid-cols-3 bg-gray-100 border-y border-gray-200">
-                  <TabsTrigger value="opportunity" className="text-xs py-1">Opportunity</TabsTrigger>
-                  <TabsTrigger value="financial" className="text-xs py-1">Financial</TabsTrigger>
-                  <TabsTrigger value="timeline" className="text-xs py-1">Timeline</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="opportunity" className="p-4 space-y-3">
-                  <div className="pb-2 border-b border-gray-200">
-                    <div className="text-xs font-medium text-gray-500">Opportunity Name:</div>
-                    <div className="font-medium text-gray-800">{stageData.expectedInputs.opportunityName}</div>
-                  </div>
-                  <div className="pb-2 border-b border-gray-200">
-                    <div className="text-xs font-medium text-gray-500">Source:</div>
-                    <div className="font-medium text-gray-800">{stageData.expectedInputs.source}</div>
-                  </div>
-                  <div className="pb-2">
-                    <div className="text-xs font-medium text-gray-500">Description:</div>
-                    <div className="font-medium text-gray-800 text-sm">{stageData.expectedInputs.description}</div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="financial" className="p-4 space-y-3">
-                  <div className="pb-2 border-b border-gray-200">
-                    <div className="text-xs font-medium text-gray-500">Deal Amount:</div>
-                    <div className="font-medium text-gray-800">${stageData.expectedInputs.amount}</div>
-                  </div>
-                  <div className="pb-2 border-b border-gray-200">
-                    <div className="text-xs font-medium text-gray-500">Probability:</div>
-                    <div className="font-medium text-gray-800">{stageData.expectedInputs.probability}%</div>
-                  </div>
-                  <div className="pb-2">
-                    <div className="text-xs font-medium text-gray-500">Stage:</div>
-                    <div className="font-medium text-gray-800">{stageData.expectedInputs.stage}</div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="timeline" className="p-4 space-y-3">
-                  <div className="pb-2 border-b border-gray-200">
-                    <div className="text-xs font-medium text-gray-500">Expected Close Date:</div>
-                    <div className="font-medium text-gray-800">{stageData.expectedInputs.expectedCloseDate}</div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-              
-              <div className="p-4 mt-4 border-t border-gray-200">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-gray-500 flex items-center">
-                    <Clock className="mr-1 h-4 w-4 text-amber-500" />
-                    Time Remaining:
-                  </div>
-                  <div className={`font-mono font-medium ${
-                    timeRemaining < 10 ? "text-red-500 animate-pulse" : "text-gray-700"
-                  }`}>
-                    {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
-                  </div>
-                </div>
+            <CardContent className="p-4">
+              <div className="p-3 bg-white border border-gray-200 rounded-md">
+                <pre className="whitespace-pre-wrap text-sm font-mono text-gray-700">{stageData.unstructuredData}</pre>
               </div>
             </CardContent>
           </Card>

@@ -12,15 +12,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { FormField, StageData } from "@/types/game";
 import { validateField } from "@/lib/gameUtils";
-import { LifeBuoy, Info, CheckCircle, AlertCircle, Clock, ClipboardList, X } from "lucide-react";
+import { LifeBuoy, Info, CheckCircle, AlertCircle, ClipboardList, X } from "lucide-react";
 
 interface StageThreeProps {
   stageData: StageData;
   onComplete: (userInputs: Record<string, string>) => void;
-  timeRemaining: number;
 }
 
-const StageThree: React.FC<StageThreeProps> = ({ stageData, onComplete, timeRemaining }) => {
+const StageThree: React.FC<StageThreeProps> = ({ stageData, onComplete }) => {
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [validFields, setValidFields] = useState<string[]>([]);
@@ -253,15 +252,8 @@ const StageThree: React.FC<StageThreeProps> = ({ stageData, onComplete, timeRema
               onClick={() => setShowRefData(!showRefData)}
             >
               <ClipboardList className="h-4 w-4 mr-1" />
-              <span className="text-xs">Reference</span>
+              <span className="text-xs">Customer Data</span>
             </Button>
-            
-            <div className="flex items-center space-x-1 bg-gray-700/50 px-2 py-1 rounded text-xs">
-              <Clock className="h-3 w-3 text-amber-400" />
-              <span className={timeRemaining < 10 ? "text-red-300 animate-pulse" : "text-gray-300"}>
-                {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
-              </span>
-            </div>
           </div>
         </motion.div>
         
@@ -305,7 +297,7 @@ const StageThree: React.FC<StageThreeProps> = ({ stageData, onComplete, timeRema
                     className="border border-gray-200 rounded-lg bg-white overflow-hidden"
                   >
                     <div className="bg-gray-100 px-3 py-2 flex items-center justify-between">
-                      <span className="text-xs font-medium text-gray-700">Reference Data</span>
+                      <span className="text-xs font-medium text-gray-700">Support Ticket Data</span>
                       <Button 
                         variant="ghost" 
                         size="sm" 
@@ -317,15 +309,7 @@ const StageThree: React.FC<StageThreeProps> = ({ stageData, onComplete, timeRema
                     </div>
                     
                     <div className="p-3 max-h-[300px] overflow-y-auto text-xs">
-                      {Object.entries(stageData.expectedInputs).map(([key, value]) => {
-                        const field = stageData.fields.find(f => f.id === key);
-                        return field ? (
-                          <div key={key} className="mb-2 pb-1 border-b border-gray-100 last:border-0">
-                            <div className="font-medium text-gray-600">{field.label}:</div>
-                            <div className="text-gray-800">{value}</div>
-                          </div>
-                        ) : null;
-                      })}
+                      <pre className="whitespace-pre-wrap font-mono text-gray-700">{stageData.unstructuredData}</pre>
                     </div>
                   </motion.div>
                 )}

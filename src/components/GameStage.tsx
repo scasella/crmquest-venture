@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { StageData, ScoreData } from "../types/game";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
@@ -27,46 +27,9 @@ const GameStage: React.FC<GameStageProps> = ({
   totalStages,
   score,
 }) => {
-  const [timeRemaining, setTimeRemaining] = useState(stageData.timeLimit);
   const [accuracy, setAccuracy] = useState(0);
   const [errors, setErrors] = useState(0);
   const [isActive, setIsActive] = useState(true);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    
-    if (isActive && timeRemaining > 0) {
-      timer = setTimeout(() => {
-        setTimeRemaining((prev) => prev - 1);
-      }, 1000);
-    } else if (timeRemaining === 0 && isActive) {
-      // Time's up
-      setIsActive(false);
-      
-      toast({
-        title: "Time's up!",
-        description: "You didn't complete the stage in time",
-        variant: "destructive",
-      });
-      
-      // Auto-submit with current values after a short delay
-      setTimeout(() => {
-        const scoreData: ScoreData = {
-          stage: currentStage,
-          score: 0, // No points for timeout
-          accuracy,
-          timeRemaining: 0,
-          errors,
-        };
-        
-        onComplete(scoreData);
-      }, 2000);
-    }
-    
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [timeRemaining, isActive, onComplete, currentStage, accuracy, errors]);
 
   const handleStageComplete = useCallback(
     (userInputs: Record<string, string>) => {
@@ -98,16 +61,11 @@ const GameStage: React.FC<GameStageProps> = ({
       // Ensure score doesn't go below zero for this stage
       stageScore = Math.max(0, stageScore);
       
-      // Add time bonus
-      const timeBonus = Math.floor(timeRemaining / 5);
-      stageScore += timeBonus;
-      
       // Create score data
       const scoreData: ScoreData = {
         stage: currentStage,
         score: stageScore,
         accuracy: stageAccuracy,
-        timeRemaining,
         errors: errorCount,
       };
       
@@ -123,7 +81,7 @@ const GameStage: React.FC<GameStageProps> = ({
         onComplete(scoreData);
       }, 1500);
     },
-    [stageData, timeRemaining, currentStage, onComplete]
+    [stageData, currentStage, onComplete]
   );
 
   // Render the appropriate stage component
@@ -131,7 +89,6 @@ const GameStage: React.FC<GameStageProps> = ({
     const props = {
       stageData,
       onComplete: handleStageComplete,
-      timeRemaining,
     };
 
     switch (currentStage) {
@@ -150,7 +107,6 @@ const GameStage: React.FC<GameStageProps> = ({
     <div className="game-container">
       <ScoreBoard
         score={score}
-        timeRemaining={timeRemaining}
         accuracy={accuracy}
         errors={errors}
         currentStage={currentStage}
