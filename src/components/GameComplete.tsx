@@ -138,21 +138,13 @@ const GameComplete: React.FC<GameCompleteProps> = ({
                     </Badge>
                   </div>
                   
-                  <div className="px-4 py-3 grid grid-cols-3 gap-4 text-sm">
+                  <div className="px-4 py-3 grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <span className="text-gray-500 flex items-center">
                         <Target className="h-3.5 w-3.5 mr-1 text-green-500" />
                         Accuracy
                       </span>
                       <span className="font-medium text-gray-800">{score.accuracy}%</span>
-                    </div>
-                    
-                    <div>
-                      <span className="text-gray-500 flex items-center">
-                        <Clock className="h-3.5 w-3.5 mr-1 text-amber-500" />
-                        Time Left
-                      </span>
-                      <span className="font-medium text-gray-800">{score.timeRemaining}s</span>
                     </div>
                     
                     <div>
@@ -184,12 +176,6 @@ const GameComplete: React.FC<GameCompleteProps> = ({
               {totalAccuracy >= 90 && (
                 <Badge className="bg-green-100 text-green-800 border-green-200">
                   Perfect Precision
-                </Badge>
-              )}
-              
-              {scores.some(score => score.timeRemaining > 30) && (
-                <Badge className="bg-blue-100 text-blue-800 border-blue-200">
-                  Speed Demon
                 </Badge>
               )}
               

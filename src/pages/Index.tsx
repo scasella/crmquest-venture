@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GameIntro from "@/components/GameIntro";
@@ -161,6 +162,7 @@ const Index = () => {
             scores={stageScores}
             totalScore={gameState.score}
             totalAccuracy={gameState.accuracy}
+            totalTime={0} // Since we removed time limits, we can set this to 0
             onRestart={handleRestart}
           />
         );

@@ -38,4 +38,6 @@ export interface ScoreData {
   score: number;
   accuracy: number;
   errors: number;
+  timeRemaining?: number; // Added as optional since we're removing time limits
 }
+
