@@ -1,9 +1,10 @@
-
 import React, { useState, useCallback } from "react";
 import { StageData, ScoreData } from "../types/game";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
 import StageThree from "./StageThree";
+import StageFour from "./StageFour";
+import StageFive from "./StageFive";
 import ScoreBoard from "./ScoreBoard";
 import {
   calculateAccuracy,
@@ -93,13 +94,13 @@ const GameStage: React.FC<GameStageProps> = ({
 
     switch (currentStage) {
       case 1:
-        return <StageOne {...props} />;
-      case 2:
-        return <StageTwo {...props} />;
-      case 3:
         return <StageThree {...props} />;
+      case 2:
+        return <StageFour {...props} />;
+      case 3:
+        return <StageFive {...props} />;
       default:
-        return <StageOne {...props} />;
+        return <StageThree {...props} />;
     }
   };
 
